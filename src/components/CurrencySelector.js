@@ -7,7 +7,11 @@ import { AppContext } from '../context/AppContext';
 
 const CurrencySelector = (props) => {
     const { dispatch, currency } = useContext(AppContext);
-//    const [currency, setCurrency] = useState('');
+    let currencyText = [];
+    currencyText['$'] = "$ (Dollar)";
+    currencyText['€'] = "€ (Euro)";
+    currencyText['£'] = "£ (Pound)";
+    currencyText['¥'] = "¥ (Yuan)";
 
     const onSelect = (value) => {
         dispatch({
@@ -16,12 +20,13 @@ const CurrencySelector = (props) => {
         });
     };
 
+
     return(
-          <DropdownButton title={`Currency ${currency}`} variant="success" onSelect={eventKey => onSelect(eventKey)}>
-            <Dropdown.Item active={currency==='$'} eventKey="$" className="dropdown-item">$ Dollar</Dropdown.Item>
-            <Dropdown.Item active={currency==='€'} eventKey="€" className="dropdown-item">€ Euro</Dropdown.Item>
-            <Dropdown.Item active={currency==='£'} eventKey="£" className="dropdown-item">£ Pound</Dropdown.Item>
-            <Dropdown.Item active={currency==='¥'} eventKey="¥" className="dropdown-item">¥ Yuan</Dropdown.Item>
+          <DropdownButton title={`Currency: ${currencyText[currency]}`} variant="success" onSelect={eventKey => onSelect(eventKey)}>
+            <Dropdown.Item active={currency==='$'} eventKey="$" className="dropdown-item">{currencyText['$']}</Dropdown.Item>
+            <Dropdown.Item active={currency==='€'} eventKey="€" className="dropdown-item">{currencyText['€']}</Dropdown.Item>
+            <Dropdown.Item active={currency==='£'} eventKey="£" className="dropdown-item">{currencyText['£']}</Dropdown.Item>
+            <Dropdown.Item active={currency==='¥'} eventKey="¥" className="dropdown-item">{currencyText['¥']}</Dropdown.Item>
           </DropdownButton>
     );
 };
