@@ -5,7 +5,7 @@ import { RiAddCircleFill } from 'react-icons/ri';
 import { AppContext } from '../context/AppContext';
 
 const ExpenseItem = (props) => {
-    const { dispatch } = useContext(AppContext);
+    const { dispatch, currency } = useContext(AppContext);
 
     const handleDeleteExpense = (ev) => {
         dispatch({
@@ -30,7 +30,7 @@ const ExpenseItem = (props) => {
         return (
                 <tr>
                 <td>{props.name}</td>
-                <td>£{props.cost}</td>
+                <td>{currency}{props.cost}</td>
                 <td><RiAddCircleFill onClick={event=> increaseAllocation(props.name)}/></td>
                 <td><TiDelete size='1.5em' onClick={event => handleDeleteExpense(event)}/></td>
                 </tr>

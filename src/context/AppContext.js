@@ -1,5 +1,17 @@
 import React, { createContext, useReducer } from 'react';
 
+let changeFactors = [];
+changeFactors['$'] = 1;
+changeFactors['€'] =  1.1;
+changeFactors['£'] = 1.5;
+changeFactors['¥'] = 0.8;
+
+export const applyFactor = (cur, value) => {
+    console.log(changeFactors[cur]);
+    let result = value / changeFactors[cur];
+    return Number.parseFloat(result).toFixed(2);
+};
+
 // 5. The reducer - this is used to update the state, based on the action
 export const AppReducer = (state, action) => {
     let budget = 0;
@@ -18,10 +30,12 @@ export const AppReducer = (state, action) => {
                 state.expenses.map((currentExp)=> {
                     if(currentExp.name === action.payload.name) {
                         currentExp.cost = action.payload.cost + currentExp.cost;
+                        budget = state.budget - currentExp.cost;
                     }
                     return currentExp
                 });
                 return {
+                    budget,
                     ...state,
                 };
             } else {
@@ -67,6 +81,13 @@ export const AppReducer = (state, action) => {
         case 'CHG_CURRENCY':
             action.type = "DONE";
             state.currency = action.payload;
+            // state.total = applyFactor(action.payload, state.total);
+            // state.expenses = state.expenses.map((item) => {
+            //     return {id: item.id, name: item.name, cost: applyFactor(action.payload, item.cost)};
+            // });
+
+            // state.remaining = applyFactor(action.payload, state.expense);
+            // state.budget = applyFactor(action.payload, state.budget);
             return {
                 ...state
             }
@@ -78,8 +99,9 @@ export const AppReducer = (state, action) => {
 
 // 1. Sets the initial state when the app loads
 const initialState = {
-    currentBudget: 2000,
+    initialBudget: 2000,
     budget: 2000,
+    remaining: 1000,
     expenses: [
         { id: "Marketing", name: 'Marketing', cost: 50 },
         { id: "Finance", name: 'Finance', cost: 300 },
@@ -113,6 +135,7 @@ export const AppProvider = (props) => {
                 expenses: state.expenses,
                 budget: state.budget,
                 remaining: remaining,
+                initialBudget: state.initialBudget,
                 dispatch,
                 currency: state.currency
             }}
